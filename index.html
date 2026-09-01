@@ -337,7 +337,12 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     applyI18n();
-    if(speakerData) renderAll();
+    if(speakerData){
+      renderAll();
+      renderAgenda();
+      renderCityTour();
+      loadAnnouncements();
+    }
   });
 });
 
@@ -497,14 +502,17 @@ function renderCityTour(){
     el('tourList').innerHTML = `<div class="loading">${t('noTour')}</div>`;
     return;
   }
-  el('tourList').innerHTML = tourData.map(item => `
-    <div class="tour-item">
-      <div class="tour-time">${item.Day} · ${item.Time}</div>
-      <p class="tour-name">${isEn ? (item.AttractionNameEN || item.AttractionName || item.ActivityEN || item.Activity) : (item.AttractionName || item.Activity)}</p>
-      <p class="tour-desc">${isEn ? (item.DescriptionEN || item.Description || '') : (item.Description || '')}</p>
-      <div class="tour-meta">${item.MeetingPoint ? (isEn?'Meet at: ':'集合地點：') + item.MeetingPoint : ''}</div>
-    </div>
-  `).join('');
+  el('tourList').innerHTML = tourData.map(item => {
+    const meetingPoint = isEn ? (item.MeetingPointEN || item.MeetingPoint) : item.MeetingPoint;
+    return `
+      <div class="tour-item">
+        <div class="tour-time">${item.Day} · ${item.Time}</div>
+        <p class="tour-name">${isEn ? (item.AttractionNameEN || item.AttractionName || item.ActivityEN || item.Activity) : (item.AttractionName || item.Activity)}</p>
+        <p class="tour-desc">${isEn ? (item.DescriptionEN || item.Description || '') : (item.Description || '')}</p>
+        <div class="tour-meta">${meetingPoint ? (isEn?'Meet at: ':'集合地點：') + meetingPoint : ''}</div>
+      </div>
+    `;
+  }).join('');
 }
 
 async function loadAnnouncements(){
