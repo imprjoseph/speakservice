@@ -257,7 +257,8 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbz3SRYSqNwSJuwMPDLiw1qS
 const VENUE = {
   name: '台北國際會議中心201會議室',
   nameEN: 'Room 201, Taipei International Convention Center',
-  address: '台北市信義區信義路五段1號'
+  address: '台北市信義區信義路五段1號',
+  addressEN: 'No. 1, Sec. 5, Xinyi Rd., Xinyi Dist., Taipei City 110014, Taiwan'
 };
 
 /* 大會緊急聯絡窗口：整場活動共用的固定聯絡人，不因講師而異，請依實際承辦人修改 */
@@ -404,8 +405,9 @@ function renderAll(){
   el('hotelCard').style.display = hasHotel ? '' : 'none';
 
   el('vName').textContent = isEn ? VENUE.nameEN : VENUE.name;
-  el('vAddress').textContent = VENUE.address;
-  el('vMapLink').href = 'https://www.google.com/maps/search/' + encodeURIComponent(VENUE.address);
+  const venueAddress = isEn ? VENUE.addressEN : VENUE.address;
+  el('vAddress').textContent = venueAddress;
+  el('vMapLink').href = 'https://www.google.com/maps/search/' + encodeURIComponent(venueAddress);
 
   el('staffEmergencyName').textContent = STAFF_EMERGENCY_CONTACT.name;
   const staffWaLink = el('staffEmergencyWhatsappLink');
